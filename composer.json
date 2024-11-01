@@ -1,0 +1,13 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Config\\": "config/",
+            "Controllers\\": "controllers/",
+            "Models\\": "models/",
+            "Interfaces\\": "interfaces/"
+        }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.5"
+    }
+}
