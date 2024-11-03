@@ -20,4 +20,26 @@ class AuthMiddleware {
             exit();
         }
     }
+
+    public static function checkToken() 
+    {
+        $headers = apache_request_headers();
+        if (!isset($headers['Authorization'])) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            exit;
+        }
+
+        $token = str_replace('Bearer ', '', $headers['Authorization']);
+
+        try {
+            $decoded = JWT::verifyToken($token);
+            return $decoded->userId;
+        } catch (Exception $e) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Invalid token']);
+            exit;
+        }
+    }
+
 }

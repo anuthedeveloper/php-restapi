@@ -6,7 +6,7 @@ use Models\User;
 use Config\JWT;
 
 class AuthController extends BaseController {
-    public function login($data) {
+    public function login(array $data) {
         $user = User::authenticate($data['email'], $data['password']);
 
         if ($user) {

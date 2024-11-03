@@ -1,6 +1,5 @@
 <?php
 // v1/users.php
-require_once __DIR__ . '/../vendor/autoload.php';
 
 use Middleware\AuthMiddleware;
 use Controllers\UserController;

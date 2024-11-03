@@ -6,10 +6,17 @@ use Firebase\JWT\JWT as FirebaseJWT;
 use Firebase\JWT\Key;
 
 class JWT {
-    private static string $secretKey = "your_secret_key";
+    private static string $secretKey = $_ENV['JWT_SECRET'];
 
-    public static function generateToken($payload): string 
+    public static function generateToken($userId): string 
     {
+        $payload = [
+            "iss" => "yourdomain.com",
+            "aud" => "yourdomain.com",
+            "iat" => time(),
+            "exp" => time() + (60 * 60), // Token expires in 1 hour
+            "userId" => $userId
+        ];
         return FirebaseJWT::encode($payload, self::$secretKey, 'HS256');
     }
 

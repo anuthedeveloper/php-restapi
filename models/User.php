@@ -3,11 +3,12 @@
 namespace Models;
 
 class User extends BaseModel {
+    protected $table = "users";
 
-    public static function authenticate($email, $password) 
+    public static function authenticate(string $email, string $password) 
     {
-        $stmt = self::getDB()->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
-        $stmt->execute([$email]);
+        $stmt = self::getDB()->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
+        $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
@@ -18,8 +19,8 @@ class User extends BaseModel {
 
     public static function find(int $id) 
     {
-        $stmt = self::getDB()->prepare("SELECT * FROM users WHERE id = ?");
-        $stmt->execute([$id]);
+        $stmt = self::getDB()->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
 

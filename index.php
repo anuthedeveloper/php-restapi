@@ -1,5 +1,7 @@
 <?php
-// index.php
+// Load environment variables and any required bootstrap code
+require_once __DIR__ . '/bootstrap/bootstrap.php';
+
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestPath = parse_url($requestUri, PHP_URL_PATH);
 

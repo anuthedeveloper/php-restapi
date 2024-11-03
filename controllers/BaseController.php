@@ -12,8 +12,8 @@ class BaseController {
 
     protected function handleException(\Exception $e) 
     {
-        http_response_code($e->getCode() ?: 500);
-        $this->jsonResponse(['error' => $e->getMessage()]);
+        $statusCode = $e->getCode() ?: 500;
+        $this->jsonResponse(['error' => $e->getMessage(), $statusCode]);
     }
 
     protected function validateInput(array $data, array $fields): bool 
@@ -30,6 +30,11 @@ class BaseController {
     protected function sanitize(mixed $input) 
     {
         return htmlspecialchars(strip_tags($input));
+    }
+
+    protected function validateEmail(string $email) 
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 }
 
