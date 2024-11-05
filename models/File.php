@@ -31,7 +31,8 @@ class File extends BaseModel {
 
     public static function create(array $data) { }
 
-    public static function all(): array { 
+    public static function all(): array 
+    { 
         return [];
     }
 

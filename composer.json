@@ -1,4 +1,10 @@
 {
+  "name": "php/customapi",
+  "authors": ["anuthedeveloper"],
+  "type": "project",
+  "description": "The skeleton application for the Laravel framework.",
+  "keywords": ["php", "core", "vanilla"],
+  "license": "MIT",
   "autoload": {
     "psr-4": {
       "Config\\": "config/",
