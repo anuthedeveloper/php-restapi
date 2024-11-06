@@ -14,12 +14,12 @@ function seedUsers() {
 
     foreach ($users as $userData) {
         $user = User::create($userData); // Hypothetical create method
-        echo "Created user: {$user['name']} ({$user['email']})\n";
+        print "Created user: {$user['name']} ({$user['email']})\n";
     }
 }
 
 seedUsers();
-echo "Database seeding complete.\n";
+print "Database seeding complete.\n";
 
 // Set Execute Permissions: Run the following command in the terminal to make seed.php executable:
 // chmod +x cli/seed.php

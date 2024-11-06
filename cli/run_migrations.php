@@ -2,20 +2,20 @@
 // ./cli/run_migrations.php
 require_once __DIR__ . '/../bootstrap/bootstrap.php';
 
-use Config\Database;
-
-$db = Database::getConnection();  // Get the PDO connection
-
 $command = $argv[1] ?? null;
 
-$migrationFiles = glob(__DIR__ . '/migrations/*.php');
+$migrationFiles = glob(__DIR__ . '/../migrations/*.php');
 usort($migrationFiles, fn($a, $b) => strcmp($a, $b)); // Sort files by name
 
 foreach ($migrationFiles as $file) {
     require_once $file;
-    $className = basename($file, '.php');
-    
+
+    // Extract the class name from the file name by removing the timestamp and converting it to PascalCase
+    $filename = basename($file, '.php');
+    $className = convertFilenameToClassName($filename);
+  
     if (class_exists($className)) {
+        print "Running migration for: $filename\n";
         $migration = new $className();
         
         if ($command === 'migrate') {
@@ -23,10 +23,31 @@ foreach ($migrationFiles as $file) {
         } elseif ($command === 'rollback') {
             $migration::down();
         } else {
-            echo "Invalid command. Use 'migrate' or 'rollback'.\n";
+            print "Invalid command. Use 'migrate' or 'rollback'.\n";
             exit(1);
         }
     } else {
-        echo "Migration class $className not found in file $file.\n";
+        print "Migration class $className not found in file $file.\n";
     }
 }
+
+function toPascalCase($string) {
+    // Convert underscores to spaces, capitalize each word, then remove spaces
+    return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+}
+
+function convertFilenameToClassName($filename) {
+    // Remove the timestamp part and convert the rest to PascalCase
+    $parts = explode('_', $filename, 5); // Limit to skip the first 4 timestamp parts
+    if ( count($parts) > 5 ) {
+        throw new InvalidArgumentException("Filename '$filename' is not in the expected format with a timestamp prefix.");
+    }
+
+    // Remove the first four parts (timestamp elements)
+    $words = array_slice($parts, 4);
+
+    // Convert remaining parts to PascalCase
+    return toPascalCase($words[0]);
+}
+
+// Run: php cli/run_migrations.php migrate | rollback
