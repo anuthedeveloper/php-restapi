@@ -6,7 +6,7 @@ use Firebase\JWT\JWT as FirebaseJWT;
 use Firebase\JWT\Key;
 
 class JWT {
-    private static string $secretKey = $_ENV['JWT_SECRET'];
+    private static string $secretKey = getenv('JWT_SECRET');
 
     public static function generateToken($userId): string 
     {

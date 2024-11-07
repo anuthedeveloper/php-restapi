@@ -6,39 +6,29 @@ use Config\JWT;
 use Exception;
 
 class AuthMiddleware {
-    public static function verifyToken() 
-    {
-        $headers = getallheaders();
-        $authHeader = $headers['Authorization'] ?? '';
-        $token = str_replace('Bearer ', '', $authHeader);
-
-        try {
-            return JWT::verifyToken($token);
-        } catch (Exception $e) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Unauthorized: Invalid token']);
-            exit();
-        }
-    }
 
     public static function checkToken() 
     {
-        $headers = apache_request_headers();
-        if (!isset($headers['Authorization'])) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Unauthorized']);
-            exit;
+        $headers = getallheaders();
+        $authorization = $headers['Authorization'] ?? '';
+        $httpAuthorization = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+
+        $authHeader = $authorization ?? $httpAuthorization;
+        if (!isset($authHeader)) {
+            response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $token = str_replace('Bearer ', '', $headers['Authorization']);
+        return str_replace('Bearer ', '', $authHeader);
+    }
 
+    public static function checkAuthorization() 
+    {
+        $token = self::checkToken();
         try {
             $decoded = JWT::verifyToken($token);
             return $decoded->userId;
         } catch (Exception $e) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Invalid token']);
-            exit;
+            response()->json(['error' => 'Unauthorized: Invalid token'], 401);
         }
     }
 

@@ -1,21 +1,35 @@
 {
-  "name": "php/customapi",
-  "authors": ["anuthedeveloper"],
+  "name": "anuthedeveloper/phptestapi",
+  "description": "A custom PHP API without a framework",
   "type": "project",
-  "description": "The skeleton application for the Laravel framework.",
   "keywords": ["php", "core", "vanilla"],
-  "license": "MIT",
-  "autoload": {
-    "psr-4": {
-      "Config\\": "config/",
-      "Controllers\\": "controllers/",
-      "Models\\": "models/",
-      "Interfaces\\": "interfaces/"
-    }
-  },
   "require": {
-    "phpmailer/phpmailer": "^6.9",
-    "vlucas/phpdotenv": "^5.6",
-    "firebase/php-jwt": "^5.2"
-  }
+      "php": "^7.4 || ^8.0",
+      "phpmailer/phpmailer": "^6.9",
+      "vlucas/phpdotenv": "^5.5",        
+      "ramsey/uuid": "^4.7",             
+      "monolog/monolog": "^2.9",
+      "firebase/php-jwt": "^6.4"         
+  },
+  "autoload": {
+      "psr-4": {
+          "App\\": "app/"
+      },
+      "files": [
+          "helpers.php" 
+      ]
+  },
+  "scripts": {
+      "post-autoload-dump": [
+          "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+          "@php -r \"require 'bootstrap/bootstrap.php';\""
+      ]
+  },
+  "config": {
+      "optimize-autoloader": true,
+      "sort-packages": true
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
 }
+

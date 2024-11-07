@@ -7,7 +7,7 @@ use Controllers\UserController;
 $userController = new UserController();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-AuthMiddleware::verifyToken(); // Check token before accessing user data
+AuthMiddleware::checkAuthorization(); // Check token before accessing user data
 
 switch ($requestMethod) {
     case 'POST':
@@ -22,6 +22,5 @@ switch ($requestMethod) {
         }
         break;
     default:
-        http_response_code(405);
-        echo json_encode(['error' => 'Method Not Allowed']);
+        response()->json(['error' => 'Method Not Allowed'], 405);
 }
