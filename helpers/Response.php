@@ -11,29 +11,27 @@ class Response
      * @param int $status The HTTP status code (default is 200).
      * @param array $headers Additional headers to include in the response.
      */
-    public static function json(array $data, int $status = 200, array $headers = [])
+    public static function json(array $data, int $status = 200, bool $return = false): ?string
     {
         // Set default headers for JSON response
-        $defaultHeaders = [
-            'Content-Type' => 'application/json',
-        ];
-
-        // Merge custom headers with defaults
-        $headers = array_merge($defaultHeaders, $headers);
+        header('Content-Type: application/json');
 
         // Set HTTP status code
         http_response_code($status);
 
-        // Set any additional headers
-        foreach ($headers as $key => $value) {
-            header("$key: $value");
-        }
-
         // Output the JSON-encoded data
-        echo json_encode($data);
+        $jsonResponse = json_encode($data);
 
+        if ($return) {
+            // Return the JSON as a string if $return is true
+            return $jsonResponse;
+        } else {
+            // Output the JSON directly for immediate response
+            echo $jsonResponse;
+            return null;
+        }
         // Stop further execution after sending the response
-        exit;
+        // exit;
     }
 
     /**
@@ -42,7 +40,7 @@ class Response
      * @param string $filePath The path to the file to be sent.
      * @param array $headers Optional headers to include in the response.
      */
-    public static function file(string $filePath, array $headers = [])
+    public static function file(string $filePath, array $headers = []): void
     {
         // Ensure the file exists
         if (!file_exists($filePath)) {

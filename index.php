@@ -2,6 +2,9 @@
 // Load environment variables and any required bootstrap code
 require_once __DIR__ . '/bootstrap/bootstrap.php';
 
+// Load route definitions
+// $routes = require_once __DIR__ . '/routes/api.php';
+
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestPath = parse_url($requestUri, PHP_URL_PATH);
 

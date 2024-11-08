@@ -41,9 +41,12 @@ $className = toPascalCase($migrationName);
 $template = <<<EOT
 <?php
 // migrations/$filename
+namespace Migrations;
+
+use Schemas\MigrationInterface;
 use Schemas\Schema;
 
-class $className {
+class $className implements MigrationInterface {
     public static function up() {
         Schema::createTable('$tableName', [
             'id' => 'INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY',

@@ -4,12 +4,17 @@ namespace Models;
 
 use Config\Database;
 use Interfaces\ModelInterface;
+use PDO;
 
 abstract class BaseModel implements ModelInterface {
-    protected string $table;
 
-    protected static function getDB() 
+    protected static ?PDO $db = null;
+
+    public function __construct()
     {
-        return Database::getConnection();
+        // Initialize the connection only once
+        if (is_null(self::$db)) {
+            self::$db = Database::getConnection();
+        }
     }
 }

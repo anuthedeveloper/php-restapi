@@ -11,7 +11,7 @@ class AuthMiddleware {
     {
         $headers = getallheaders();
         $authorization = $headers['Authorization'] ?? '';
-        $httpAuthorization = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+        $httpAuthorization = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? $_SERVER['HTTP_AUTHORIZATION'];
 
         $authHeader = $authorization ?? $httpAuthorization;
         if (!isset($authHeader)) {

@@ -2,6 +2,8 @@
 // ./cli/run_migrations.php
 require_once __DIR__ . '/../bootstrap/bootstrap.php';
 
+use Schemas\MigrationInterface;
+
 $command = $argv[1] ?? null;
 
 $migrationFiles = glob(__DIR__ . '/../migrations/*.php');
@@ -17,7 +19,12 @@ foreach ($migrationFiles as $file) {
     if (class_exists($className)) {
         print "Running migration for: $filename\n";
         $migration = new $className();
-        
+
+        if (!$migration instanceof MigrationInterface) {
+            print "Error: $className must implement MigrationInterface.\n";
+            continue;
+        }
+                
         if ($command === 'migrate') {
             $migration::up();
         } elseif ($command === 'rollback') {

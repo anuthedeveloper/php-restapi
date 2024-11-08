@@ -15,3 +15,26 @@ if (!function_exists('response')) {
         };
     }
 }
+
+if (!function_exists('sanitize_input')) {
+    /**
+     * Sanitize user input to prevent XSS attacks
+     */
+    function sanitize_input(string $input): string {
+        return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+if (!function_exists('array_flatten')) {
+    /**
+     * Flatten a multi-dimensional array
+     */
+    function array_flatten(array $array): array {
+        $result = [];
+        array_walk_recursive($array, function ($value) use (&$result) {
+            $result[] = $value;
+        });
+        return $result;
+    }
+}
+

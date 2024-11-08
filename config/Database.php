@@ -13,12 +13,13 @@ class Database {
         // Make the constructor private to prevent instantiation
     }
 
-    public static function getConnection(): PDO 
+    public static function initialize(): void
     {
         // Load credentials from environment variables
+        // $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']};charset={$config['charset']}";
         $dsn = "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']};charset={$_ENV['DB_CHARSET']}";
-        $user = $_ENV['DB_USER'];
-        $pass = $_ENV['DB_PASS'];
+        $user = $_ENV['DB_USERNAME'];
+        $pass = $_ENV['DB_PASSWORD'];
 
         try {
             $options = [
@@ -35,7 +36,10 @@ class Database {
               error_log('Database Connection Error: ' . $e->getMessage());
               throw new \Exception("Database connection failed.");
         }
+    }
 
+    public static function getConnection(): ?PDO 
+    {
         return self::$connection;
     }
 
