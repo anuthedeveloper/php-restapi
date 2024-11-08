@@ -32,5 +32,3 @@ if (!function_exists('jsonResponse')) {
         echo json_encode($data);
     }
 }
-
-

@@ -11,7 +11,7 @@ class AuthController extends BaseController {
 
         if ($user) {
             $token = JWT::generateToken(['user_id' => $user['id']]);
-            $this->jsonResponse(['token' => $token]);
+            $this->jsonResponse(['token' => $token, 'user' => $user]);
         } else {
             $this->jsonResponse(['error' => 'Invalid credentials'], 401);
         }

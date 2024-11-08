@@ -16,7 +16,7 @@ class BaseController {
         $this->jsonResponse(['error' => $e->getMessage(), $statusCode]);
     }
 
-    protected function validateInput(array $data, array $fields): bool 
+    protected function validateInput(array $data, array $fields) 
     {
         foreach ($fields as $field) {
             if (empty($data[$field])) {

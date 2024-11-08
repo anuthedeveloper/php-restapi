@@ -1,21 +1,21 @@
 <?php
 // controllers/EmailController.php
+namespace Controllers;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class EmailController {
+
+class EmailController extends BaseController {
     public function sendSimpleEmail($to, $subject, $message) 
     {
         $headers = "From: no-reply@example.com\r\n";
         $headers .= "Content-Type: text/plain; charset=utf-8";
 
         if (mail($to, $subject, $message, $headers)) {
-            http_response_code(200);
-            echo json_encode(['message' => 'Email sent successfully']);
+            $this->jsonResponse(['message' => 'Email sent successfully'], 200);
         } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Failed to send email']);
+            $this->jsonResponse(['error' => 'Failed to send email'], 500);
         }
     }
 
@@ -39,11 +39,10 @@ class EmailController {
             $mail->Body    = $message;
 
             $mail->send();
-            http_response_code(200);
-            echo json_encode(['message' => 'Email sent successfully']);
+            $this->jsonResponse(['message' => 'Email sent successfully'], 200);
         } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode(['error' => "Message could not be sent. Error: {$mail->ErrorInfo}"]);
+            error_log("Failed message error: " . $e->getMessage());
+            $this->jsonResponse(['error' => "Message could not be sent. Error: {$mail->ErrorInfo}"], 500);
         }
     }
 }
