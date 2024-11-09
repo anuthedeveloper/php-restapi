@@ -21,8 +21,8 @@ function seedUsers() {
 seedUsers();
 print "Database seeding complete.\n";
 
-// Set Execute Permissions: Run the following command in the terminal to make seed.php executable:
-// chmod +x cli/seed.php
+// Set Execute Permissions: Run the following command in the terminal to make seed_database.php executable:
+// chmod +x cli/seed_database.php
 
 // Run the Script: Now, you can execute the script directly from the command line:
-// ./cli/seed.php
+// ./cli/seed_database.php

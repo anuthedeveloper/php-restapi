@@ -3,14 +3,14 @@
 
 // Check if the migration name is provided as an argument
 if ($argc < 2) {
-    echo "Usage: make_migration.php <migration_name>\n";
+    print "Usage: make_migration.php <migration_name>\n";
     exit(1);
 }
 
 // Get the migration name and sanitize it
 $migrationName = preg_replace('/[^a-zA-Z0-9_]/', '', $argv[1]);
 if (!$migrationName) {
-    echo "Invalid migration name. Only alphanumeric and underscore characters are allowed.\n";
+    print "Invalid migration name. Only alphanumeric and underscore characters are allowed.\n";
     exit(1);
 }
 
@@ -64,9 +64,9 @@ EOT;
 
 // Write the template to a new file in the migrations directory
 if (file_put_contents($filepath, $template) !== false) {
-    echo "Migration file created: $filepath\n";
+    print "Migration file created: $filepath\n";
 } else {
-    echo "Failed to create migration file.\n";
+    print "Failed to create migration file.\n";
 }
 
 
