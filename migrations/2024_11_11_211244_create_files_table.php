@@ -1,8 +1,11 @@
 <?php
-// migrations/2024_11_05_135537_create_files_table.php
+// migrations/2024_11_11_211244_create_files_table.php
+namespace Migrations;
+
+use App\Schemas\MigrationInterface;
 use App\Schemas\Schema;
 
-class CreateFilesTable {
+class CreateFilesTable implements MigrationInterface {
     public static function up() {
         Schema::createTable('files', [
             'id' => 'INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY',

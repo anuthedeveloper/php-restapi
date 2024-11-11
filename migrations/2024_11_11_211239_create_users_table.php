@@ -1,8 +1,11 @@
 <?php
-// migrations/2024_11_05_134629_create_users_table.php
+// migrations/2024_11_11_211239_create_users_table.php
+namespace Migrations;
+
+use App\Schemas\MigrationInterface;
 use App\Schemas\Schema;
 
-class CreateUsersTable {
+class CreateUsersTable implements MigrationInterface {
     public static function up() {
         Schema::createTable('users', [
             'id' => 'INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY',

@@ -2,7 +2,7 @@
 // ./cli/run_migrations.php
 require_once __DIR__ . '/../bootstrap/bootstrap.php';
 
-use Schemas\MigrationInterface;
+use App\Schemas\MigrationInterface;
 
 $command = $argv[1] ?? null;
 
@@ -15,7 +15,7 @@ foreach ($migrationFiles as $file) {
     // Extract the class name from the file name by removing the timestamp and converting it to PascalCase
     $filename = basename($file, '.php');
     $className = convertFilenameToClassName($filename);
-  
+
     if (class_exists($className)) {
         print "Running migration for: $filename\n";
         $migration = new $className();

@@ -3,18 +3,18 @@
 // Load environment variables and bootstrap the application
 require_once __DIR__ . '/../bootstrap/bootstrap.php';
 
-use Models\User;
+use App\Models\User;
 
 // Example function to seed the database with user data
 function seedUsers() {
     $users = [
-        ['name' => 'Alice', 'email' => 'alice@example.com'],
-        ['name' => 'Bob', 'email' => 'bob@example.com'],
+        ['fullname' => 'Alice', 'email' => 'alice@example.com'],
+        ['fullname' => 'Bob', 'email' => 'bob@example.com'],
     ];
 
     foreach ($users as $userData) {
         $user = User::create($userData); // Hypothetical create method
-        print "Created user: {$user['name']} ({$user['email']})\n";
+        print "Created user: {$user['fullname']} ({$user['email']})\n";
     }
 }
 

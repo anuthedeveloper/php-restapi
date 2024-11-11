@@ -43,8 +43,8 @@ $template = <<<EOT
 // migrations/$filename
 namespace Migrations;
 
-use Schemas\MigrationInterface;
-use Schemas\Schema;
+use App\Schemas\MigrationInterface;
+use App\Schemas\Schema;
 
 class $className implements MigrationInterface {
     public static function up() {
