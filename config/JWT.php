@@ -6,10 +6,20 @@ use Firebase\JWT\JWT as FirebaseJWT;
 use Firebase\JWT\Key;
 
 class JWT {
-    private static string $secretKey = getenv('JWT_SECRET');
+    private static ?string $secretKey = null;
+
+    public static function setSecretKey(): void
+    {
+        if (self::$secretKey === null ) {
+            self::$secretKey = getenv('JWT_SECRET') ?: '';
+        }
+    }
 
     public static function generateToken($userId): string 
     {
+        // Ensure secret key is set
+        self::setSecretKey();
+
         $payload = [
             "iss" => "yourdomain.com",
             "aud" => "yourdomain.com",
@@ -22,6 +32,9 @@ class JWT {
 
     public static function verifyToken($token): object 
     {
+        // Ensure secret key is set
+        self::setSecretKey();
+
         return FirebaseJWT::decode($token, new Key(self::$secretKey, 'HS256'));
     }
 }

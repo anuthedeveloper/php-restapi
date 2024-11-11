@@ -1,11 +1,12 @@
 <?php
 // models/User.php
-namespace Models;
+namespace App\Models;
+
 use PDO;
 
 class User extends BaseModel {
 
-    protected static $table = "users";
+    protected static string $table = "users";
 
     public static function authenticate(string $email, string $password) 
     {

@@ -1,6 +1,6 @@
 <?php
 // schemas/Schema.php
-namespace Schemas;
+namespace App\Schemas;
 
 use Config\Database;
 

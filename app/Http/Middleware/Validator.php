@@ -1,15 +1,14 @@
 <?php
 
-namespace Middleware;
+namespace App\Http\Middleware;
 
-class ValidationMiddleware
+class Validator
 {
     public static function handle(array $input)
     {
         foreach ($input as $key => $value) {
             if (empty($value)) {
-                http_response_code(400);
-                echo json_encode(['error' => "Field '$key' is required."]);
+                response()->json(['error' => "Field '$key' is required."], 400);
                 exit;
             }
             $input[$key] = htmlspecialchars(strip_tags($value));

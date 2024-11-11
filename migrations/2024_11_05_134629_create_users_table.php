@@ -1,6 +1,6 @@
 <?php
 // migrations/2024_11_05_134629_create_users_table.php
-use Schemas\Schema;
+use App\Schemas\Schema;
 
 class CreateUsersTable {
     public static function up() {

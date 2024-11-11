@@ -1,13 +1,24 @@
 <?php
 // middleware/AuthMiddleware.php
-namespace Middleware;
+namespace App\Http\Middleware;
 
 use Config\JWT;
 use Exception;
 
 class AuthMiddleware {
 
-    public static function checkToken() 
+    public static function handle() 
+    {
+        $token = self::checkToken();
+        try {
+            $decoded = JWT::verifyToken($token);
+            return $decoded->userId;
+        } catch (Exception $e) {
+            response()->json(['error' => 'Unauthorized: Invalid token'], 401);
+        }
+    }
+    
+    private static function checkToken() 
     {
         $headers = getallheaders();
         $authorization = $headers['Authorization'] ?? '';
@@ -19,17 +30,6 @@ class AuthMiddleware {
         }
 
         return str_replace('Bearer ', '', $authHeader);
-    }
-
-    public static function checkAuthorization() 
-    {
-        $token = self::checkToken();
-        try {
-            $decoded = JWT::verifyToken($token);
-            return $decoded->userId;
-        } catch (Exception $e) {
-            response()->json(['error' => 'Unauthorized: Invalid token'], 401);
-        }
     }
 
 }

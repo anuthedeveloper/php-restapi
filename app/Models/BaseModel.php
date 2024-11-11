@@ -1,9 +1,9 @@
 <?php
 // models/BaseModel.php
-namespace Models;
+namespace App\Models;
 
 use Config\Database;
-use Interfaces\ModelInterface;
+use App\Interfaces\ModelInterface;
 use PDO;
 
 abstract class BaseModel implements ModelInterface {

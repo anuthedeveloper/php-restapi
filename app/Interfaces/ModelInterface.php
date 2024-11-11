@@ -1,6 +1,6 @@
 <?php
 // interfaces/ModelInterface.php
-namespace Interfaces;
+namespace App\Interfaces;
 
 interface ModelInterface {
     public static function find(int $id);

@@ -1,6 +1,6 @@
 <?php
 // migrations/2024_11_05_135537_create_files_table.php
-use Schemas\Schema;
+use App\Schemas\Schema;
 
 class CreateFilesTable {
     public static function up() {

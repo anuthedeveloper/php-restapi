@@ -1,6 +1,6 @@
 <?php
 
-namespace Schemas;
+namespace App\Schemas;
 
 interface MigrationInterface
 {

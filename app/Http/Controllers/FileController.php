@@ -1,15 +1,14 @@
 <?php
 // controllers/FileController.php
-namespace Controllers;
+namespace App\Http\Controllers;
 
-use Models\File;
+use App\Models\File;
 
-class FileController extends BaseController {
+class FileController extends Controller {
     public function uploadFile(array $file) 
     {
         if (empty($file['name']) || empty($file['type']) || empty($file['tmp_name'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Invalid file upload']);
+            response()->json(['error' => 'Invalid file upload'], 400);
             return;
         }
 
@@ -18,7 +17,7 @@ class FileController extends BaseController {
         $fileData = file_get_contents($file['tmp_name']);
 
         $fileId = File::uploadFile($filename, $mimeType, $fileData);
-        $this->jsonResponse(['message' => 'File uploaded', 'fileId' => $fileId], 201);
+        response()->json(['message' => 'File uploaded', 'fileId' => $fileId], 201);
     }
 
     public function downloadFile(int $id) 
@@ -29,7 +28,7 @@ class FileController extends BaseController {
             header("Content-Disposition: attachment; filename=" . $file['filename']);
             echo $file['data'];
         } else {
-            $this->jsonResponse(['error' => 'File not found'], 404);
+            response()->json(['error' => 'File not found'], 404);
         }
     }
 
@@ -41,7 +40,7 @@ class FileController extends BaseController {
             header("Content-Disposition: attachment; filename=" . $file['filename']);
             echo $file['data'];
         } else {
-            $this->jsonResponse(['error' => 'File not found'], 404);
+            response()->json(['error' => 'File not found'], 404);
         }
     }
 }
