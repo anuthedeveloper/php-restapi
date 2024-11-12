@@ -5,6 +5,7 @@
     </IfModule>
 
     RewriteEngine On
+    # RewriteBase /exact/phptestapi/
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -19,6 +20,6 @@
     # Rewrite all requests to index.php
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
-    # RewriteRule ^(.*)$ index.php [QSA,L]
+    # RewriteRule ^ index.php [L]
+    RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>

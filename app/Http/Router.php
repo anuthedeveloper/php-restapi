@@ -43,7 +43,6 @@ class Router
             foreach ($this->routes[$requestMethod] as $route => $controllerAction) {
                 // Match the route with the request URI
                 if ($this->matchRoute($route, $requestUri, $params)) {
-                    // Call the controller method dynamically
                     list($controllerClass, $action) = $controllerAction;
 
                     // Instantiate the controller and call the action method

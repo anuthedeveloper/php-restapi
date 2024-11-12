@@ -44,17 +44,20 @@ function toPascalCase($string) {
 }
 
 function convertFilenameToClassName($filename) {
-    // Remove the timestamp part and convert the rest to PascalCase
-    $parts = explode('_', $filename, 5); // Limit to skip the first 4 timestamp parts
-    if ( count($parts) > 5 ) {
+    // Remove the timestamp part and convert the remaining words to PascalCase
+    $parts = explode('_', $filename, 5); // Split into max 5 parts to skip the first 4 (timestamp)
+    
+    // Check if the filename has enough parts
+    if (count($parts) < 5) {
         throw new InvalidArgumentException("Filename '$filename' is not in the expected format with a timestamp prefix.");
     }
 
-    // Remove the first four parts (timestamp elements)
+    // Combine all parts after the timestamp to form the class name
     $words = array_slice($parts, 4);
 
-    // Convert remaining parts to PascalCase
-    return toPascalCase($words[0]);
+    // Convert to PascalCase
+    return 'Migrations\\' . toPascalCase(implode('_', $words));
 }
+
 
 // Run: php cli/run_migrations.php migrate | rollback
