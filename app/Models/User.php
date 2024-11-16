@@ -2,18 +2,15 @@
 // models/User.php
 namespace App\Models;
 
-use PDO;
-
 class User extends BaseModel {
-
     protected static string $table = "users";
 
     public static function authenticate(string $email, string $password) 
     {
-        $stmt = self::$db->prepare("SELECT * FROM ". self::$table ." WHERE email = :email LIMIT 1");
-        $stmt->execute(['email' => $email]);
-        $user = $stmt->fetch();
-
+        // Ensure the database connection is initialized
+        self::initialize();
+        
+        $user = self::$db->select(self::$table, ['email' => $email]);
         if ($user && password_verify($password, $user['password'])) {
             return $user;
         }
@@ -22,62 +19,66 @@ class User extends BaseModel {
 
     public static function find(int $id) 
     {
-        $stmt = self::$db->prepare("SELECT * FROM users WHERE id = :id");
-        $stmt->execute(['id' => $id]);
-        return $stmt->fetch();
+        self::initialize();
+        $sql = "SELECT * FROM ".self::$table." WHERE id = :id LIMIT 1"; 
+        $user = self::$db->get_row($sql, ['id' => $id]);
+        return (array) $user;
     }
 
     public static function findAll(): array 
     {
-        $stmt = self::$db->query("SELECT * FROM users");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        self::initialize();
+
+        $users = self::$db->query("SELECT * FROM " . self::$table);
+        return $users;
     }
 
-    public static function findByEmail($email)
+    public static function findByEmail(string $email)
     {
-        $stmt = self::$db->prepare("SELECT * FROM users WHERE email = :email");
-        $stmt->execute([':email' => $email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM ".self::$table." WHERE email = :email LIMIT 1"; 
+        $user = self::$db->get_row($sql, ['email' => $email]);
+        return $user;
     }
 
     public static function create(array $data)
     {
-        $stmt = self::$db->prepare("INSERT INTO users (fullname, email, password) VALUES (:fullname, :email, :password)");
-        $stmt->execute([
-            ':fullname' => $data['fullname'],
-            ':email' => $data['email'],
-            ':password' => password_hash($data['password'], PASSWORD_DEFAULT)
-        ]);
+        self::initialize();
+
+        $user = self::findByEmail($data['email']);
+        if ( $user ) {
+            throw new \Exception("User with email {$data['email']} already exists.");
+        }
+
+        $bindValue = [
+            'fullname' => $data['fullname'],
+            'email' => $data['email'],
+            'password' => hashPassword($data['password'])
+        ];
+        self::$db->insert(self::$table, $bindValue);
         return self::find(self::$db->lastInsertId());
     }
 
     public static function update($id, array $data)
     {
         $fields = [];
-        $params = [':id' => $id];
+        $whereClause = ['id' => $id];
 
         if (isset($data['fullname'])) {
-            $fields[] = 'fullname = :fullname';
-            $params[':fullname'] = $data['fullname'];
+            $fields[] = 'fullname =  ' . $data['fullname'];
         }
         if (isset($data['email'])) {
-            $fields[] = 'email = :email';
-            $params[':email'] = $data['email'];
+            $fields[] = 'email = '. $data['email'];
         }
         if (isset($data['password'])) {
-            $fields[] = 'password = :password';
-            $params[':password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            $fields[] = 'password = ' . hashPassword($data['password']);
         }
 
-        $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = :id";
-        $stmt = self::$db->prepare($sql);
-        $stmt->execute($params);
+        self::$db->update(self::$table, $fields, $whereClause);
     }
 
-    public static function delete($id)
+    public static function delete(int $id)
     {
-        $stmt = self::$db->prepare("DELETE FROM users WHERE id = ?");
-        $stmt->execute([$id]);
+        self::$db->delete(self::$table, ['id' => $id]);
     }
 
 }

@@ -5,25 +5,25 @@ use ReflectionMethod;
 
 class Router
 {
-    // Define routes property, if required
-    protected $routes = [];
+    // Define router property, if required
+    protected $router = [];
 
     // Register a route with a method, route pattern, and controller-action pair
     public function add(string $method, string $route, array $controllerAction)
     {
         // Normalize the HTTP method to uppercase (GET, POST, etc.)
-        $this->routes[strtoupper($method)][$route] = $controllerAction;
+        $this->router[strtoupper($method)][$route] = $controllerAction;
     }
 
     // Find the controller and action for a given request method and route
-    public function resolve(string $method, string $route)
+    public function resolve(string $method, string $route): ?array
     {
-        // $this->routes[strtoupper($method)][$route];
-        if (!isset($this->routes[strtoupper($method)])) {
+        if (!isset($this->router[strtoupper($method)])) {
             return null;
         }
-
-        foreach ($this->routes[$method] as $routePattern => $controllerAction) {
+        $params = "?name=hello";
+        foreach ($this->router[$method] as $routePattern => $controllerAction) {
+            // print_r($controllerAction);
             if ($this->matchRoute($routePattern, $route, $params)) {
                 return ['controllerAction' => $controllerAction, 'params' => $params];
             }
@@ -39,8 +39,8 @@ class Router
         $requestUri = preg_replace('/^\/api\/v1/', '', $requestUri);
 
         // Check if the method exists in the registered routes
-        if (isset($this->routes[$requestMethod])) {
-            foreach ($this->routes[$requestMethod] as $route => $controllerAction) {
+        if (isset($this->router[$requestMethod])) {
+            foreach ($this->router[$requestMethod] as $route => $controllerAction) {
                 // Match the route with the request URI
                 if ($this->matchRoute($route, $requestUri, $params)) {
                     list($controllerClass, $action) = $controllerAction;
@@ -63,6 +63,7 @@ class Router
     private function matchRoute(string $routePattern, string $requestUri, &$params): bool
     {
         // Convert route and URI to regex
+        $requestUri = preg_replace('/^\/api\/v1/', '', $requestUri);
         $routeRegex = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<$1>[^/]+)', $routePattern);
         $routeRegex = '#^' . $routeRegex . '$#';
 

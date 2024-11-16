@@ -108,3 +108,14 @@ if (!function_exists('validateEmail')) {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 }
+
+if (!function_exists('hashPassword')) {
+     /**
+     * Hash Password Algo
+     */
+    function hashPassword(string $password): string
+    {
+        // CRYPT_BLOWFISH 
+        return password_hash($password, PASSWORD_BCRYPT, ["option" => 8]); 
+    }
+}

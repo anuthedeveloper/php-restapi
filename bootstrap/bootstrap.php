@@ -37,15 +37,6 @@ set_error_handler(function ($level, $message, $file, $line) use ($log) {
 });
 
 // Initialize database connection (using Singleton pattern)
-// $vars = [
-//     'driver' => getenv('DB_DRIVER'),
-//     'host' => getenv('DB_HOST'),
-//     'database' => getenv('DB_NAME'),
-//     'username' => getenv('DB_USERNAME'),
-//     'password' => getenv('DB_PASSWORD'),
-//     'charset' => getenv('DB_CHARSET'),
-//     'collation' => getenv('DB_COLLATION'),
-// ];
 Database::initialize();
 
 // Example: Define global constants (if needed)

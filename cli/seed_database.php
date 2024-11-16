@@ -8,13 +8,17 @@ use App\Models\User;
 // Example function to seed the database with user data
 function seedUsers() {
     $users = [
-        ['fullname' => 'Alice', 'email' => 'alice@example.com'],
-        ['fullname' => 'Bob', 'email' => 'bob@example.com'],
+        ['fullname' => 'Alice', 'email' => 'alice@example.com', 'password' => 'Test@01'],
+        ['fullname' => 'Bob', 'email' => 'bob@example.com', 'password' => 'Test@01']
     ];
-
+    
     foreach ($users as $userData) {
-        $user = User::create($userData); // Hypothetical create method
-        print "Created user: {$user['fullname']} ({$user['email']})\n";
+        try {
+            $user = User::create($userData);
+            print "Created user: {$user->fullname} ({$user->email})\n";
+        } catch (Exception $e) {
+            print "Error creating user: " . $e->getMessage() . "\n";
+        }
     }
 }
 

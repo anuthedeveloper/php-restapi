@@ -1,6 +1,5 @@
 # phptestapi
 
-
 ## Project File Structure
 
 ```
@@ -52,12 +51,12 @@
 
 - /app: Contains the core application logic.
 
-    - Controllers: Manage incoming requests and call services or models as needed.
-    - Models: Represent database tables and encapsulate database interactions.
-    - Helpers: Include reusable utilities like Response for JSON handling and Auth for authentication.
-    - Middlewares: Define middleware classes for authorization, validation, etc.
-    - Schemas: Store classes related to schema migrations, including Schema for creating and dropping tables and interfaces for migrations.
-    - Services: Handle the business logic for each resource, providing a layer between controllers and models.
+  - Controllers: Manage incoming requests and call services or models as needed.
+  - Models: Represent database tables and encapsulate database interactions.
+  - Helpers: Include reusable utilities like Response for JSON handling and Auth for authentication.
+  - Middlewares: Define middleware classes for authorization, validation, etc.
+  - Schemas: Store classes related to schema migrations, including Schema for creating and dropping tables and interfaces for migrations.
+  - Services: Handle the business logic for each resource, providing a layer between controllers and models.
 
 - /bootstrap: Contains the bootstrap.php file, where the project initializes configurations, autoloading, and dependencies.
 
@@ -80,3 +79,7 @@
 - helpers.php: A global file for any helper functions (e.g., the response() function for Response).
 
 This structure provides clear separation of concerns, making the project maintainable, scalable, and easy to navigate as it grows.
+
+## Run Project
+
+$ php -S localhost:8000

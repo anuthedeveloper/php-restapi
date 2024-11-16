@@ -99,21 +99,24 @@ class Route extends Router
 
         // Resolve the route using the Router class
         $routeInfo = self::resolveRoute($requestMethod, $requestUri);
-
         if ($routeInfo) {
             // Extract the controller and action from the controllerAction array
             list($controllerClass, $action) = $routeInfo['controllerAction'];
-            $middleware = $routeInfo['middleware'];
+            
+            // Extract the middleware if set and apply to handle it
+            if ( isset($routeInfo['middleware']) ) {
+                $middleware = $routeInfo['middleware'];
 
-            // Apply middleware
-            foreach ($middleware as $middlewareClass) {
-                $middlewareInstance = new $middlewareClass();
-                $middlewareInstance->handle($request);
+                // Apply middleware
+                foreach ($middleware as $middlewareClass) {
+                    $middlewareInstance = new $middlewareClass();
+                    $middlewareInstance->handle($request);
+                }
             }
-
+            
             // Instantiate the controller and call the action
             $controllerInstance = new $controllerClass();
-            // echo $controllerInstance->$action($request);
+            // $response = $controllerInstance->$action($request);
             $response = call_user_func_array([$controllerInstance, $action], $routeInfo['params']);
             echo $response;
         } else {
@@ -133,14 +136,14 @@ class Route extends Router
     {
         // Make sure the Router class has been initialized
         $router = new Router();
-
+       
         // Add the routes
-        foreach (self::$routes as $methodKey => $routes) {
-            foreach ($routes as $routePattern => $routeInfo) {
+        foreach (self::$routes as $methodKey => $routesArr) {
+            foreach ($routesArr as $routePattern => $routeInfo) {
                 $router->add($methodKey, $routePattern, $routeInfo['controllerAction']);
             }
         }
-
+     
         // Resolve the controller and action based on method and route
         return $router->resolve($method, $route);
     }
