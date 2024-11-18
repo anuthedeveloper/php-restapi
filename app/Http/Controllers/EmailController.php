@@ -1,5 +1,6 @@
 <?php
 // controllers/EmailController.php
+namespace App\Http\Controllers;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;

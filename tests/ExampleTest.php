@@ -1,7 +1,8 @@
 <?php
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Helpers\Response;
+use App\Helpers\Response;
 
 class ExampleTest extends TestCase
 {
