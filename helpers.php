@@ -7,10 +7,12 @@ if (!function_exists('response')) {
         return new class {
             public function json(array $data, int $status = 200, bool $return = false) {
                 Response::json($data, $status, $return);
+                exit;
             }
 
             public function file(string $filePath, array $headers = []) {
                 Response::file($filePath, $headers);
+                exit;
             }
         };
     }

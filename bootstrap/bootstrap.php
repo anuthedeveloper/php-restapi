@@ -32,8 +32,6 @@ set_exception_handler(function ($e) use ($log) {
 
 set_error_handler(function ($level, $message, $file, $line) use ($log) {
     $log->error($message, ['level' => $level, 'file' => $file, 'line' => $line]);
-    http_response_code(500);
-    echo json_encode(['error' => 'Internal Server Error']);
 });
 
 // Initialize database connection (using Singleton pattern)

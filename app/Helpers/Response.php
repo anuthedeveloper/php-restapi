@@ -31,7 +31,7 @@ class Response
             return null;
         }
         // Stop further execution after sending the response
-        // exit;
+        exit;
     }
 
     /**
@@ -45,7 +45,6 @@ class Response
         // Ensure the file exists
         if (!file_exists($filePath)) {
             self::json(['error' => 'File not found.'], 404);
-            exit;
         }
 
         // Set default headers for file response

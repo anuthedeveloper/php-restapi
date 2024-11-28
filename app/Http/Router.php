@@ -9,10 +9,10 @@ class Router
     protected $router = [];
 
     // Register a route with a method, route pattern, and controller-action pair
-    public function add(string $method, string $route, array $controllerAction)
+    public function add(string $method, string $route, array $routeInfo)
     {
         // Normalize the HTTP method to uppercase (GET, POST, etc.)
-        $this->router[strtoupper($method)][$route] = $controllerAction;
+        $this->router[strtoupper($method)][$route] = $routeInfo;
     }
 
     // Find the controller and action for a given request method and route
@@ -22,10 +22,10 @@ class Router
             return null;
         }
         $params = "?name=hello";
-        foreach ($this->router[$method] as $routePattern => $controllerAction) {
-            // print_r($controllerAction);
+        foreach ($this->router[$method] as $routePattern => $routeInfo) {
+            // print_r($routeInfo);
             if ($this->matchRoute($routePattern, $route, $params)) {
-                return ['controllerAction' => $controllerAction, 'params' => $params];
+                return ['controllerAction' => $routeInfo['controllerAction'], 'middleware' => $routeInfo['middleware'], 'params' => $params];
             }
         }
 

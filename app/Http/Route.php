@@ -140,7 +140,7 @@ class Route extends Router
         // Add the routes
         foreach (self::$routes as $methodKey => $routesArr) {
             foreach ($routesArr as $routePattern => $routeInfo) {
-                $router->add($methodKey, $routePattern, $routeInfo['controllerAction']);
+                $router->add($methodKey, $routePattern, $routeInfo);
             }
         }
      
