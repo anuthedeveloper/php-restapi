@@ -22,7 +22,7 @@ class User extends BaseModel {
         self::initialize();
         $sql = "SELECT * FROM ".self::$table." WHERE id = :id LIMIT 1"; 
         $user = self::$db->get_row($sql, ['id' => $id]);
-        return (array) $user;
+        return $user;
     }
 
     public static function findAll(): array 

@@ -40,7 +40,7 @@ class UserController extends Controller {
         if (!$user) {
             return Response::json(['error' => 'User not found'], 404);
         }
-        return Response::json($user);
+        return Response::json(['user' => $user]);
     }
 
     public function store(Request $request)

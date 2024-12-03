@@ -8,9 +8,18 @@ use App\Http\Request;
 use App\Helpers\Response;
 
 class AuthController extends Controller {
-    public function login(Request $request) {
+
+    protected function validate( array $data ): void
+    {
+        $requiredFields = ['email', 'password'];
+        validateInput($data, $requiredFields);
+    }
+
+    public function login(Request $request) 
+    {
         // Get all input data
         $data = $request->all();
+        $this->validate($data);
         $user = User::authenticate($data['email'], $data['password']);
 
         if ($user) {
