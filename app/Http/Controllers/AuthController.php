@@ -17,8 +17,10 @@ class AuthController extends Controller {
 
     public function login(Request $request) 
     {
+        echo "hit";
         // Get all input data
         $data = $request->all();
+        var_dump($data);
         $this->validate($data);
         $user = User::authenticate($data['email'], $data['password']);
 

@@ -3,21 +3,11 @@
 namespace App\Http\Middleware;
 
 use Config\JWT;
+use App\Http\Request;
 use Exception;
 
 class AuthMiddleware {
 
-    public static function handle() 
-    {
-        $token = self::checkToken();
-        try {
-            $decoded = JWT::verifyToken($token);
-            return $decoded->userId;
-        } catch (Exception $e) {
-            response()->json(['error' => 'Unauthorized: Invalid token'], 401);
-        }
-    }
-    
     private static function checkToken() 
     {
         $headers = getallheaders();
@@ -30,6 +20,18 @@ class AuthMiddleware {
         }
 
         return str_replace('Bearer ', '', $authHeader);
+    }
+
+    public static function handle(Request $request, callable $next) 
+    {
+        $token = self::checkToken();
+        try {
+            $decoded = JWT::verifyToken($token);
+            return $decoded->userId;
+        } catch (Exception $e) {
+            response()->json(['error' => 'Unauthorized! Invalid token'], 401);
+        }
+        return $next($request);
     }
 
 }

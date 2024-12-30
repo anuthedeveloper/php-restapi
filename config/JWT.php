@@ -25,7 +25,7 @@ class JWT {
             "aud" => "yourdomain.com",
             "iat" => time(),
             "exp" => time() + (60 * 60), // Token expires in 1 hour
-            "userId" => $userId
+            "user" => $userId
         ];
         return FirebaseJWT::encode($payload, self::$secretKey, 'HS256');
     }

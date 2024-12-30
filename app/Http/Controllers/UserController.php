@@ -11,7 +11,7 @@ class UserController extends Controller {
     public function getUser(Request $request, int $id) 
     {
         $user = User::find($id);
-        $user ? Response::json($user) : Response::json(['error' => 'User not found'], 404);
+        $user ? Response::json(["success" => true, $user]) : Response::json(['error' => 'User not found'], 404);
         
     }
 
@@ -31,7 +31,7 @@ class UserController extends Controller {
     public function index()
     {
         $users = User::findAll();
-        return Response::json($users);
+        return Response::json(["success" => true, "users" => $users]);
     }
 
     public function show($id)
@@ -76,4 +76,5 @@ class UserController extends Controller {
         User::delete($id);
         return Response::json(['message' => 'User deleted']);
     }
+
 }
