@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use Config\Database;
+use Config\Session;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -24,7 +25,7 @@ $log->pushHandler(new StreamHandler(__DIR__ . '/../storage/logs/app.log', Logger
 
 // Exception and Error Handling
 set_exception_handler(function ($e) use ($log) {
-    $log->error($e->getMessage(), ['exception' => $e]);
+    $log->error($e->getMessage(), ['exception' => (string) $e]);
     http_response_code(500);
     echo json_encode(['error' => 'Internal Server Error']);
 });
@@ -42,3 +43,4 @@ define('STORAGE_PATH', BASE_PATH . 'storage/');
 
 // Load any additional helpers or middleware if necessary
 // require_once __DIR__ . '/../app/Middleware/AuthMiddleware.php';
+Session::start();

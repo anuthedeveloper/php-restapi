@@ -14,32 +14,47 @@ class User extends BaseModel {
         return null;
     }
 
-    public static function find(int $id) : object
+    public static function findById(int $id) : object
     {
-        self::initialize();
+        self::initializeDb();
         $sql = "SELECT * FROM ".self::$table." WHERE id = :id LIMIT 1"; 
         $user = self::$db->get_row($sql, ['id' => $id]);
-        return $user;
+        return $user ?: null;
+    }
+
+    public static function find(array $params) : object
+    {
+        self::initializeDb();
+        if (!empty($params) && is_array($params)) {
+            $conditions = [];
+            foreach ($params as $field => $value) {
+                $conditions[] = "{$field} = '{$value}'";
+            }
+            $whereClause = " WHERE " . implode(' AND ', $conditions);
+        }
+        $sql = "SELECT * FROM ".self::$table . $whereClause." LIMIT 1"; 
+        $user = self::$db->get_row($sql);
+        return $user ?: null;
     }
 
     public static function findAll(): array 
     {
-        self::initialize();
+        self::initializeDb();
         $users = self::$db->query("SELECT * FROM ". self::$table);
         return $users;
     }
 
-    public static function findByEmail(string $email) : object
+    public static function findByEmail(string $email) : ?object
     {
-        self::initialize();
+        self::initializeDb();
         $sql = "SELECT * FROM ".self::$table." WHERE email = :email LIMIT 1"; 
         $user = self::$db->get_row($sql, ['email' => $email]);
-        return $user;
+        return $user ?: null;
     }
 
     public static function create(array $data)
     {
-        self::initialize();
+        self::initializeDb();
         $user = self::findByEmail($data['email']);
         if ( $user ) {
             throw new \Exception("User with email {$data['email']} already exists.");
@@ -51,11 +66,13 @@ class User extends BaseModel {
             'password' => hashPassword($data['password'])
         ];
         self::$db->insert(self::$table, $bindValue);
-        return self::find(self::$db->lastInsertId());
+        return self::findById(self::$db->lastInsertId());
     }
 
     public static function update($id, array $data) : int
     {
+        self::initializeDb();
+
         $fields = [];
         $whereClause = ['id' => $id];
 
@@ -69,19 +86,18 @@ class User extends BaseModel {
             $fields[] = 'password = ' . hashPassword($data['password']);
         }
 
-        self::initialize();
         return self::$db->update(self::$table, $fields, $whereClause);
     }
 
     public static function delete(int $id) : int
     {
-        self::initialize();
+        self::initializeDb();
         return self::$db->delete(self::$table, ['id' => $id]);
     }
 
-    public function createResource(array $data)
+    public function createResource(array $data) : int
     {
-        self::initialize();
+        self::initializeDb();
         $result = self::$db->insert(self::$table, $data);
 
         if ($result) {

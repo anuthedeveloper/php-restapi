@@ -69,6 +69,16 @@ class Request
     }
 
     /**
+     * Get the request Ip address.
+     *
+     * @return string
+     */
+    public static function ip(): string
+    {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
+    /**
      * Determine if the request is an AJAX request.
      *
      * @return bool

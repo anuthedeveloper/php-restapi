@@ -93,35 +93,34 @@ class Route extends Router
     public static function handle()
     {
         $request = Request::capture();
-        // Get the request URI and method
         $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         // Resolve the route using the Router class
         $routeInfo = self::resolveRoute($requestMethod, $requestUri);
         if ($routeInfo) {
-            // Extract the controller and action from the controllerAction array
             list($controllerClass, $action) = $routeInfo['controllerAction'];
             
             // Extract the middleware if set and apply to handle it
             if ( isset($routeInfo['middleware']) ) {
-                $middleware = $routeInfo['middleware'];
-
-                // Apply middleware
-                foreach ($middleware as $middlewareClass) {
-                    $middlewareInstance = new $middlewareClass();
-                    $middlewareInstance->handle($request);
+                foreach ($routeInfo['middleware'] as $middlewareClass) {
+                    (new $middlewareClass())->handle($request);
                 }
             }
             
-            // Instantiate the controller and call the action
-            $controllerInstance = new $controllerClass();
-            // $response = $controllerInstance->$action($request);
-            $response = call_user_func_array([$controllerInstance, $action], $routeInfo['params']);
-            echo $response;
+            try {
+                // Instantiate the controller and call the action
+                $controllerInstance = new $controllerClass();
+                // $response = $controllerInstance->$action($request);
+                $response = call_user_func_array([$controllerInstance, $action], array_merge([$request], $routeInfo['params']));
+                echo $response;
+            } catch (\App\Exceptions\ValidationException $e) {
+                response()->json(['errors' => $e->getErrors()], 422);
+            } catch (\Exception $e) {
+                response()->json(['error' => 'Internal Server Error'], 500);
+            }
         } else {
-            // If no route is found, return 404
-            response()->json(['error' => 'Not Found'], 404);
+            response()->json(['error' => 'Not Found'], 404);  // If no route is found, return 404
         }
     }
 

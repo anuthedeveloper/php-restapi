@@ -79,15 +79,15 @@ if (!function_exists('validateInput')) {
     /**
      * Determine whether a variable is empty
      */
-    function validateInput(array $data, array $fields) 
+    function validateInput(array $data, array $requiredFields) 
     {
-        foreach ($fields as $field) {
+        $errors = [];
+        foreach ($requiredFields as $field) {
             if (empty($data[$field])) {
-                Response::json(['error' => "Missing field: $field"], 400);
-                exit();
+                $errors[$field] = "Missing field: $field";
             }
         }
-        return true;
+        return $errors;
     }
 }
 
@@ -121,3 +121,4 @@ if (!function_exists('hashPassword')) {
         return password_hash($password, PASSWORD_BCRYPT, ["option" => 8]); 
     }
 }
+

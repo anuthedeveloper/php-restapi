@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Config\JWT;
+use Config\Session;
 use App\Http\Request;
 use Exception;
 
@@ -20,6 +21,13 @@ class AuthMiddleware {
         }
 
         return str_replace('Bearer ', '', $authHeader);
+    }
+
+    private static function checkAuthSession()
+    {
+        if (!Session::has('user')) {
+            response()->json(['error' => 'Unauthorized'], 401);
+        }
     }
 
     public static function handle(Request $request, callable $next) 

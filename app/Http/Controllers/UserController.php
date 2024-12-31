@@ -10,7 +10,7 @@ class UserController extends Controller {
     
     public function getUser(Request $request, int $id) 
     {
-        $user = User::find($id);
+        $user = User::findById($id);
         $user ? Response::json(["success" => true, $user]) : Response::json(['error' => 'User not found'], 404);
         
     }
@@ -36,7 +36,7 @@ class UserController extends Controller {
 
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findById($id);
         if (!$user) {
             return Response::json(['error' => 'User not found'], 404);
         }
@@ -59,7 +59,7 @@ class UserController extends Controller {
     {
         $data = $request->all();
 
-        if (!User::find($id)) {
+        if (!User::findById($id)) {
             return Response::json(['error' => 'User not found'], 404);
         }
 
@@ -69,7 +69,7 @@ class UserController extends Controller {
 
     public function destroy($id)
     {
-        if (!User::find($id)) {
+        if (!User::findById($id)) {
             return Response::json(['error' => 'User not found'], 404);
         }
 

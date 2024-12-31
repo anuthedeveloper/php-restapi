@@ -19,7 +19,7 @@ abstract class BaseModel implements ModelInterface {
         }
     }
 
-    public static function initialize(): void
+    public static function initializeDb(): void
     {
         if (self::$db === null) {
             // Create an instance of the class to invoke the constructor
