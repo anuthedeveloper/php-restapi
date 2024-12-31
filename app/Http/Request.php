@@ -79,6 +79,16 @@ class Request
     }
 
     /**
+     * Get the request query string.
+     *
+     * @return string
+     */
+    public static function query(): string
+    {
+        return htmlspecialchars($_SERVER['QUERY_STRING'] ?? "", ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
      * Determine if the request is an AJAX request.
      *
      * @return bool

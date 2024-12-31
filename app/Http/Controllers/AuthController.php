@@ -36,6 +36,13 @@ class AuthController extends Controller {
         Response::json(['token' => $token]);
     }
 
+    public function register(Request $request)
+    {
+        $data = $request->all();
+
+        $this->validate($data);
+    }
+
     public function logout(): void
     {
         Session::destroy();

@@ -21,7 +21,9 @@ class Router
         if (!isset($this->router[strtoupper($method)])) {
             return null;
         }
-        $params = "?name=hello";
+
+        $params = $_SERVER['QUERY_STRING'] ?? "";
+
         foreach ($this->router[$method] as $routePattern => $routeInfo) {
             // print_r($routeInfo);
             if ($this->matchRoute($routePattern, $route, $params)) {
