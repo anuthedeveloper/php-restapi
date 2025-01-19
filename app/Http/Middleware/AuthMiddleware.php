@@ -34,10 +34,14 @@ class AuthMiddleware {
     {
         $token = self::checkToken();
         try {
-            $decoded = JWT::verifyToken($token);
+            if (!$decoded = JWT::verifyToken($token)) {
+                throw new Exception("Unauthorized! Invalid token", 1);
+            }
+            self::checkAuthSession();
+            
             return $decoded->userId;
         } catch (Exception $e) {
-            response()->json(['error' => 'Unauthorized! Invalid token'], 401);
+            response()->json(['error' => $e->getMessage()], 401);
         }
         return $next($request);
     }

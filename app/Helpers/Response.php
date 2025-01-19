@@ -28,10 +28,10 @@ class Response
         } else {
             // Output the JSON directly for immediate response
             echo $jsonResponse;
-            exit;
+            exit();
         }
         // Stop further execution after sending the response
-        exit;
+        exit();
     }
 
     /**

@@ -122,3 +122,20 @@ if (!function_exists('hashPassword')) {
     }
 }
 
+if (!function_exists('sanitize_sensitive_data')) {
+    /**
+     * Removes sensitive credentials by replacing them with a placeholder.
+     *
+     * @param array|string $data Data containing sensitive information.
+     * @param string $placeholder The value to replace sensitive data with.
+     * @return array|string The sanitized data.
+     */
+    function sanitize_sensitive_data(array|string $data, string $placeholder = '***'): array|string
+    {
+        if (is_array($data)) {
+            return array_map(fn($value) => $placeholder, $data);
+        }
+
+        return $placeholder;
+    }
+}

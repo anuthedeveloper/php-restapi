@@ -31,16 +31,16 @@ class UserController extends Controller {
     public function index()
     {
         $users = User::findAll();
-        return Response::json(["success" => true, "users" => $users]);
+        Response::json(["success" => true, "users" => $users]);
     }
 
     public function show($id)
     {
         $user = User::findById($id);
         if (!$user) {
-            return Response::json(['error' => 'User not found'], 404);
+            Response::json(['error' => 'User not found'], 404);
         }
-        return Response::json(['user' => $user]);
+        Response::json(['user' => $user]);
     }
 
     public function store(Request $request)
@@ -48,11 +48,11 @@ class UserController extends Controller {
         $data = $request->all();
 
         if (!isset($data['fullname']) || !isset($data['email']) || !isset($data['password'])) {
-            return Response::json(['error' => 'Missing required fields'], 400);
+            Response::json(['error' => 'Missing required fields'], 400);
         }
 
         $user = User::create($data);
-        return Response::json(['message' => 'User created', 'user' => $user], 201);
+        Response::json(['message' => 'User created', 'user' => $user], 201);
     }
 
     public function update(Request $request, string $id)
@@ -60,21 +60,21 @@ class UserController extends Controller {
         $data = $request->all();
 
         if (!User::findById($id)) {
-            return Response::json(['error' => 'User not found'], 404);
+            Response::json(['error' => 'User not found'], 404);
         }
 
         User::update($id, $data);
-        return Response::json(['message' => 'User updated']);
+        Response::json(['message' => 'User updated']);
     }
 
     public function destroy($id)
     {
         if (!User::findById($id)) {
-            return Response::json(['error' => 'User not found'], 404);
+            Response::json(['error' => 'User not found'], 404);
         }
 
         User::delete($id);
-        return Response::json(['message' => 'User deleted']);
+        Response::json(['message' => 'User deleted']);
     }
 
 }

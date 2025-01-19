@@ -32,8 +32,10 @@ class AuthController extends Controller {
         $token = JWT::generateToken(['user_id' => $user->id]);
         Session::put('user', ['id' => $user->id, 'email' => $user->email]);
         Session::regenerate(); // Prevent session fixation
-
-        Response::json(['token' => $token]);
+        // exclude data
+        unset($user->password);
+        
+        Response::json(['user' => $user, 'token' => $token]);
     }
 
     public function register(Request $request)

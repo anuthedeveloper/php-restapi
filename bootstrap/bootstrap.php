@@ -8,6 +8,7 @@ use Config\Database;
 use Config\Session;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Stripe\Stripe;
 
 // Load environment variables from .env file if it exists
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
@@ -44,3 +45,6 @@ define('STORAGE_PATH', BASE_PATH . 'storage/');
 // Load any additional helpers or middleware if necessary
 // require_once __DIR__ . '/../app/Middleware/AuthMiddleware.php';
 Session::start();
+
+$stripeSecretKey = getenv('STRIPE_SECRET_KEY');
+Stripe::setApiKey($stripeSecretKey);

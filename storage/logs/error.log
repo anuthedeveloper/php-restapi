@@ -1,0 +1,7 @@
+[19-Jan-2025 18:01:55 UTC] Database Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[19-Jan-2025 18:01:55 UTC] PHP Fatal error:  Uncaught Exception: Database connection failed. in C:\xampp\htdocs\exact\phptestapi\config\Database.php:39
+Stack trace:
+#0 C:\xampp\htdocs\exact\phptestapi\bootstrap\bootstrap.php(38): Config\Database::initialize()
+#1 Command line code(1): require('...')
+#2 {main}
+  thrown in C:\xampp\htdocs\exact\phptestapi\config\Database.php on line 39

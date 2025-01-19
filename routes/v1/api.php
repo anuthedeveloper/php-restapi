@@ -1,10 +1,12 @@
 <?php
-// api/v1
+// routes/v1/api.php
 
+use App\Http\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthMiddleware;
-use App\Http\Route;
+use App\Http\Controllers\PaymentController;
+
 
 // Define the routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -14,3 +16,6 @@ Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'store'], [AuthMiddleware::class]);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+Route::post('/payment', [PaymentController::class, 'processPayment']);
+Route::post('/webhook', [PaymentController::class, 'handleWebhook']);
