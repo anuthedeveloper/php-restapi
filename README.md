@@ -82,4 +82,4 @@ This structure provides clear separation of concerns, making the project maintai
 
 ## Run Project
 
-$ php -S localhost:8000
+$ php -S localhost:8000 -t public

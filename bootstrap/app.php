@@ -1,5 +1,5 @@
 <?php 
-// bootstrap/bootstrap.php
+// bootstrap/app.php
 // Autoload dependencies using Composer's autoloader
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -42,8 +42,7 @@ Database::initialize();
 define('BASE_PATH', __DIR__ . '/../');
 define('STORAGE_PATH', BASE_PATH . 'storage/');
 
-// Load any additional helpers or middleware if necessary
-// require_once __DIR__ . '/../app/Middleware/AuthMiddleware.php';
+// Start session
 Session::start();
 
 $stripeSecretKey = getenv('STRIPE_SECRET_KEY');
